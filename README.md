@@ -58,3 +58,5 @@ One of the goals of the project is to keep the dom overhead as light possible an
 [Investigating Drap and Drop with Blazor](https://chrissainty.com/investigating-drag-and-drop-with-blazor/)
 
 [Browser Interop](https://github.com/RemiBou/BrowserInterop/tree/master/src/BrowserInterop)
+
+[Computing Css Scope - Source Code](https://github.com/dotnet/aspnetcore/blob/a190fd34854542266956b1af980c19afacb95feb/src/Razor/Microsoft.NET.Sdk.Razor/src/ComputeCssScope.cs#L43)
