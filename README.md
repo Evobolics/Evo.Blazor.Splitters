@@ -40,3 +40,5 @@ The next step is to create a div that appears after every
 [Working Example using Splitter.js](http://jsfiddle.net/aguiguy/y2x7fdnu/)
 
 [BlazorSplit](https://github.com/BlazorComponents/BlazorSplit) - An older implementation of a blazor split control that uses javascript.
+
+[Investigating Drap and Drop with Blazor](https://chrissainty.com/investigating-drag-and-drop-with-blazor/)
