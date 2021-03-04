@@ -42,3 +42,5 @@ The next step is to create a div that appears after every
 [BlazorSplit](https://github.com/BlazorComponents/BlazorSplit) - An older implementation of a blazor split control that uses javascript.
 
 [Investigating Drap and Drop with Blazor](https://chrissainty.com/investigating-drag-and-drop-with-blazor/)
+
+[Browser Interop](https://github.com/RemiBou/BrowserInterop/tree/master/src/BrowserInterop)
