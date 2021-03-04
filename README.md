@@ -2,6 +2,16 @@
 
 Goal is to create a native splitter implementation for blazor
 
+# Purpose 
+
+1) Learn what is needed to create a decently complex custom control in Blazor
+2) Create a splitter control that can be used to seperate a control area from a canvas
+
+# Goals
+
+- Avoid as much javascript as possible - The goal is to create a native solution if at all possible and not have to mess with a javascript implementation.  Split.js already does this work well, and the purpose of this project is to learn what it takes to 
+- Inject as litle as possible into the DOM when implementing the control.  Gutter/Splitter bars will need to be added to seperate the panes, but one of the goals of this project is to learn how the DIV elements already present in the markup can be used.  There are two ways of approaching this. The first is to use javascript to edit what is already there.  The second is to use an HTML agility pack and parse the HTML and rebuild the outer divs.  Currently leaning toward the second as it eliminates javascript from the equation, which is another goal.
+
 # Implementation
 
 ## Get Two Divs to Show Up
@@ -23,9 +33,13 @@ Goal is to create a native splitter implementation for blazor
 Make the bar the right height, and color, give the panes a background color, use a calc expression to handle height.
 
 ## Make Formating Appear Dynamically
-The next step is to create a div that appears after every 
+The next step is to create a div that appears after every pane div.  
 
 ## Use Cascading Values or Models to Propigate Settings
+
+## Rendering
+
+One of the goals of the project is to keep the dom overhead as light possible and not to impose elements onto to the developer if they are not needed.  
 
 # References
 
