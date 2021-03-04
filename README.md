@@ -2,6 +2,31 @@
 
 Goal is to create a native splitter implementation for blazor
 
+# Implementation
+
+## Get Two Divs to Show Up
+
+### Setup Child Content
+
+## Build the Gutter / Splitter Bar
+
+### Setup Services
+
+### Made Services Injectable
+
+### Setup Pane Registration
+
+### Add Logic to Determine If Pane is Last
+
+## Format the Controls Statically
+
+Make the bar the right height, and color, give the panes a background color, use a calc expression to handle height.
+
+## Make Formating Appear Dynamically
+The next step is to create a div that appears after every 
+
+## Use Cascading Values or Models to Propigate Settings
+
 # References
 
 [Column Resizable](https://github.com/alvaro-prieto/colResizable/blob/master/colResizable-1.6.js)
