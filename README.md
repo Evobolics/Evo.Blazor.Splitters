@@ -39,7 +39,209 @@ The next step is to create a div that appears after every pane div.
 
 ## Rendering
 
-One of the goals of the project is to keep the dom overhead as light possible and not to impose elements onto to the developer if they are not needed.  
+
+
+### Reuse Existing Divs
+
+This project shares some of the same goals that splitter.js has, including the goal of keeping the dom overhead as light possible and not to impose elements onto to the developer if they are not needed.  To this end, the evo splitter pane needs to render two different ways depending upon whether child content's root element is a div element.  If the child content root is a div, then the code will replace the root div, and only render the content within the childs content root element.  If the child content has more than one root, or the root element is not a div, then the content will be wrapped in a div.  
+
+Below is the first evolution of this code that demonstrates the basic technique.  It might be possible to go back to a standard razor page, but that might take some experimentation.  The only gotcah is dynamically filling in the attributes.  [Initial research points that this might be unlikely.](https://stackoverflow.com/questions/64196493/in-blazor-how-can-i-dynamically-change-an-html-tag).
+```
+public partial class EvoSplitterPane: EvoSplitterPaneBase
+    {
+        private bool _TryUseExistingDiv = true;
+        private bool _UseExistingDiv = false;
+        private bool _FirstRender = true;
+        private string _InnerDivHtml = null;
+        private Dictionary<string, object> _outerDivAttributes;
+        private string _OrignalStyleValue;
+
+        // One strategy could be to read the div and its attributes
+
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+#pragma warning disable BL0006
+
+            if (_FirstRender && _TryUseExistingDiv)
+            {
+                _FirstRender = false;
+
+                AttemptToUseExistingDiv();
+            }
+
+            if (_UseExistingDiv)
+            {
+                builder.OpenElement(0, "div");
+
+                if (string.IsNullOrWhiteSpace(_OrignalStyleValue))
+                {
+                    builder.AddAttribute(1, "style", DynamicStyle);
+                }
+                else
+                {
+                    //
+                    builder.AddAttribute(1, "style", $"{_OrignalStyleValue};{DynamicStyle}");
+                }
+
+                builder.AddMultipleAttributes(2, _outerDivAttributes);
+
+                builder.AddAttribute(3, "b-9gda3aicu2");
+
+                builder.AddContent(4, _InnerDivHtml);
+                builder.CloseElement();
+                if (!this.IsLastPane())
+                {
+                    TypeInference.CreateCascadingValue_0(builder, 5, 6, this, 7, (__builder2) =>
+                    {
+                        __builder2.OpenComponent<EvoGutterBar>(8);
+                        __builder2.CloseComponent();
+                    });
+                }
+            }
+            else
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "style", DynamicStyle);
+                builder.AddAttribute(2, "b-9gda3aicu2");
+                builder.AddContent(3, ChildContent);
+                builder.CloseElement();
+
+                if (!this.IsLastPane())
+                {
+                    TypeInference.CreateCascadingValue_0(builder, 4, 5, this, 6, (__builder2) =>
+                    {
+                        __builder2.OpenComponent<Evo.Blazor.EvoGutterBar>(7);
+                        __builder2.CloseComponent();
+                    });
+                }
+            }
+        }
+
+        public void AttemptToUseExistingDiv()
+        {
+            if (!TryGetMarkupFrame(ChildContent, out var markupFrame))
+            {
+                Console.WriteLine("Could not get mark up frame.");
+                _UseExistingDiv = false;
+                return;
+            }
+
+            if (!TryGetCleanMarkupContent(markupFrame, out var markupContent))
+            {
+                Console.WriteLine("Could not clean content");
+                _UseExistingDiv = false;
+                return;
+            }
+
+            var htmlDoc = new HtmlDocument();
+
+            htmlDoc.LoadHtml(markupContent);
+
+            var documentNode = htmlDoc.DocumentNode;
+
+            if (documentNode.ChildNodes.Count > 1)
+            {
+                Console.WriteLine("Not a single root node in child content");
+                _UseExistingDiv = false;
+                return;
+            }
+
+            var childNode = documentNode.ChildNodes[0];
+
+            if (childNode.NodeType != HtmlNodeType.Element)
+            {
+                Console.WriteLine("Single node is not an element.");
+                _UseExistingDiv = false;
+                return;
+            }
+
+            Console.WriteLine(childNode.Name);
+
+            if (childNode.Name != "div")
+            {
+                Console.WriteLine("Node is not a 'div' node.");
+                _UseExistingDiv = false;
+                return;
+            }
+
+            _InnerDivHtml = childNode.InnerHtml;
+
+            _outerDivAttributes = new Dictionary<string, object>();
+
+            foreach(var attribute in childNode.Attributes)
+            {
+                if (attribute?.OriginalName?.ToLower() == "style")
+                {
+                    _OrignalStyleValue = attribute.Value;
+                }
+                else
+                {
+                    _outerDivAttributes.Add(attribute.OriginalName, attribute.Value);
+                }
+            }
+
+            _UseExistingDiv = true;
+        }
+
+        private bool TryGetCleanMarkupContent(RenderTreeFrame markupFrame, out string cleanContent)
+        {
+            if (markupFrame.FrameType != RenderTreeFrameType.Markup)
+            {
+                cleanContent = null;
+                return false;
+            }
+
+            var content = markupFrame.MarkupContent;
+
+            if (content == null)
+            {
+                cleanContent = null;
+                return false;
+            }
+
+            cleanContent = content?.Trim();
+
+            return true;
+        }
+
+        private bool TryGetMarkupFrame(RenderFragment fragment, out RenderTreeFrame markupFrame)
+        {
+            var builder = new RenderTreeBuilder();
+
+            builder.AddContent(0, fragment);
+
+            var frames = builder.GetFrames();
+
+            foreach (var frame in frames.Array)
+            {
+                if (frame.FrameType == RenderTreeFrameType.Markup)
+                {
+                    markupFrame = frame;
+                    return true;
+                }
+            }
+
+            markupFrame = default;
+            return false;
+        }
+
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            return base.OnAfterRenderAsync(firstRender);
+        }
+
+        internal static class TypeInference
+        {
+            public static void CreateCascadingValue_0<TValue>(RenderTreeBuilder __builder, int seq, int __seq0, TValue __arg0, int __seq1, global::Microsoft.AspNetCore.Components.RenderFragment __arg1)
+            {
+                __builder.OpenComponent<global::Microsoft.AspNetCore.Components.CascadingValue<TValue>>(seq);
+                __builder.AddAttribute(__seq0, "Value", __arg0);
+                __builder.AddAttribute(__seq1, "ChildContent", __arg1);
+                __builder.CloseComponent();
+            }
+        }
+    }
+```
 
 # References
 
