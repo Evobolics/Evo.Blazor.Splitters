@@ -262,3 +262,5 @@ public partial class EvoSplitterPane: EvoSplitterPaneBase
 [Browser Interop](https://github.com/RemiBou/BrowserInterop/tree/master/src/BrowserInterop)
 
 [Computing Css Scope - Source Code](https://github.com/dotnet/aspnetcore/blob/a190fd34854542266956b1af980c19afacb95feb/src/Razor/Microsoft.NET.Sdk.Razor/src/ComputeCssScope.cs#L43)
+
+[Css Isolation in Blazor](https://www.meziantou.net/css-isolation-in-blazor.htm)
