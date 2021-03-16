@@ -268,3 +268,5 @@ public partial class EvoSplitterPane: EvoSplitterPaneBase
 Splitter Examples - [Example 1](http://jsfiddle.net/aguiguy/y2x7fdnu/) and [Example 2](https://jsfiddle.net/8qmbywr1/)
 
 [Blazored](https://github.com/Blazored)
+
+[Blazor Source Code](https://github.com/dotnet/aspnetcore/tree/c925f99cddac0df90ed0bc4a07ecda6b054a0b02/src/Components/Components/src)
