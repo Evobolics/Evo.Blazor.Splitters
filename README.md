@@ -272,3 +272,5 @@ Splitter Examples - [Example 1](http://jsfiddle.net/aguiguy/y2x7fdnu/) and [Exam
 [Blazor Source Code](https://github.com/dotnet/aspnetcore/tree/c925f99cddac0df90ed0bc4a07ecda6b054a0b02/src/Components/Components/src)
 
 [Lupusa87/BlazorSplitter](https://github.com/Lupusa87/BlazorSplitter/tree/master/BlazorSplitterComponent)
+
+https://coder-coder.com/display-divs-side-by-side/
