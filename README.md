@@ -1,6 +1,6 @@
 # Evo.Blazor.Splitters
 
-A .NET 5.0 Blazor Splitter Control Implementation that is almost entirely written in C#.
+A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.
 
 # How to Use
 
