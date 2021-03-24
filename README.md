@@ -1,6 +1,8 @@
 # Evo.Blazor.Splitters
 
-Goal is to create a native splitter implementation for blazor
+A .NET 5.0 Blazor Splitter Control Implementation
+
+# How to Use
 
 # Purpose 
 
