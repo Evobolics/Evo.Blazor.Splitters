@@ -1,0 +1,9 @@
+﻿@inherits Evo.Controls.Blazor.EvoGutterBarBase
+
+<div class="@Class"
+     role="gutter"
+     style="@Style"
+     draggable="false"
+     @onmousedown="@OnMouseDown" @onmouseup="@OnMouseUp" @onmousemove="@OnMouseMove" @onmouseout="@OnMouseOut"></div>
+<!-- This class does not use drag drop operations due to performance.  If you want to use drag drop, then  you need to 
+    set draggable to true, else you cannot start the drag operation-->

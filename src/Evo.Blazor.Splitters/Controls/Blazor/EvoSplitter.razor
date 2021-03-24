@@ -1,0 +1,8 @@
+﻿@inherits Evo.Controls.Blazor.EvoSplitterBase
+
+<!--Allow the spitter panes to be aware of the parent-->
+<CascadingValue Value="@this">
+    @EvoSpitterPanes
+</CascadingValue>
+
+

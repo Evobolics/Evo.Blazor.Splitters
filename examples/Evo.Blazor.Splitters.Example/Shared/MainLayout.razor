@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page" style="user-select: none;">
+    <div class="sidebar" style="user-select: none;">
+        <NavMenu />
+    </div>
+
+    <div class="main" style="user-select: none;">
+        @*<div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>*@
+
+        <div class="content px-4" style="user-select: none;">
+            @Body
+        </div>
+    </div>
+</div>
