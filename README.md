@@ -4,6 +4,8 @@ A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.
 
 # How to Use
 
+Comming Soon - The code is checked in but a formal guide on how to use it needs to be put together. If immediately interested in how to use the control, please see the example in the solution.
+
 # Purpose 
 
 1) Learn what is needed to create a decently complex custom control in Blazor
