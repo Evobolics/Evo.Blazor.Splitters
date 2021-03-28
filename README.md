@@ -1,6 +1,6 @@
 # Evo.Blazor.Splitters
 
-A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.
+A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.  
 
 # How to Use
 
@@ -246,6 +246,10 @@ public partial class EvoSplitterPane: EvoSplitterPaneBase
         }
     }
 ```
+
+## Redesign of the Measurement Process
+
+The initial design was setup where the control would be measured after reach render was complete.  After implementing an resizeObserver pattern, it is thought it may be better to receive updates on the javascript versus polling on the render process.  
 
 # References
 
