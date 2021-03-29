@@ -1,6 +1,4 @@
-﻿using Evo.Models.Blazor;
-
-namespace Evo.Models.Blazor
+﻿namespace Evo.Models.Blazor
 {
     public static class ElementMeasurementsExtensions
     {

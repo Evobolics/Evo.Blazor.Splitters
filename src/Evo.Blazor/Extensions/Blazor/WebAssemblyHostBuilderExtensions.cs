@@ -1,4 +1,6 @@
-﻿using Evo.Services.Blazor;
+﻿using Evo.Blazor.Models;
+using Evo.JsServices.Blazor;
+using Evo.Services.Blazor;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -24,7 +26,13 @@ namespace Evo.Extensions
 
             builder.Services.AddScoped<GeneralJsService>();
             builder.Services.AddScoped<ElementJsService>();
+            
+            builder.Services.AddScoped<ElementService_I, ElementService>();
             builder.Services.AddScoped<EvoJavascriptComponentService>();
+            builder.Services.AddTransient<Element>();
+            builder.Services.AddScoped<MessageBus_I, MessageBus>();
+            builder.Services.AddScoped<FactoryService_I, FactoryService>();
+
 
 
             return Task.CompletedTask;

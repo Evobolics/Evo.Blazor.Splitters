@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evo.Blazor", "Evo.Blazor\Ev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evo.Blazor.Splitters.Example", "..\examples\Evo.Blazor.Splitters.Example\Evo.Blazor.Splitters.Example.csproj", "{6D19EADA-45AA-45A2-959E-B0C01275FDFE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evo.Blazor.Canvases", "Evo.Blazor.Canvases\Evo.Blazor.Canvases.csproj", "{A16309D6-B228-4408-89B9-29AC1C119508}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evo.Blazor.Canvases.Example", "..\examples\Evo.Blazor.Canvases.Example\Evo.Blazor.Canvases.Example.csproj", "{4DF1F6B2-A95B-4C34-BE9C-FFBCBEE50654}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{6D19EADA-45AA-45A2-959E-B0C01275FDFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D19EADA-45AA-45A2-959E-B0C01275FDFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D19EADA-45AA-45A2-959E-B0C01275FDFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16309D6-B228-4408-89B9-29AC1C119508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16309D6-B228-4408-89B9-29AC1C119508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16309D6-B228-4408-89B9-29AC1C119508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16309D6-B228-4408-89B9-29AC1C119508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF1F6B2-A95B-4C34-BE9C-FFBCBEE50654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF1F6B2-A95B-4C34-BE9C-FFBCBEE50654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF1F6B2-A95B-4C34-BE9C-FFBCBEE50654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF1F6B2-A95B-4C34-BE9C-FFBCBEE50654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{033925FE-647D-40A0-B302-ED270326FB5F} = {A8855CAF-ACAF-424B-B8AF-8D70CDBC53C6}
 		{AA1FC654-6D59-4FC8-A3A0-14A515893861} = {A8855CAF-ACAF-424B-B8AF-8D70CDBC53C6}
+		{A16309D6-B228-4408-89B9-29AC1C119508} = {A8855CAF-ACAF-424B-B8AF-8D70CDBC53C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {282A60A1-6C4F-4F60-89D1-C69A306B6956}

@@ -1,4 +1,5 @@
-﻿using Evo.Models.Blazor;
+﻿using Evo.Controls.Blazor;
+using Evo.Models.Blazor;
 
 namespace Evo.Services.Blazor
 {
@@ -6,7 +7,7 @@ namespace Evo.Services.Blazor
     {
         
 
-        public bool IsLastPane(VirtualEvoSplitterPane virtualComponent)
+        public bool IsLastPane(EvoSplitterPane virtualComponent)
         {
             var parent = virtualComponent.Parent;
 

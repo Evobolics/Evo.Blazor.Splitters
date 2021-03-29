@@ -1,10 +1,4 @@
-﻿using Evo.Blazor.Models;
-using Evo.Models.Blazor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Evo.Services.Blazor
 {
@@ -26,23 +20,23 @@ namespace Evo.Services.Blazor
             await _General.ConsoleLog(message);
         }
 
-        public async ValueTask<ElementMeasurements> GetElementMeasurements(Element element)
-        {
-            return await _Element.GetElementMeasurements(element);
-        }
+        //public async ValueTask<ElementMeasurements> GetElementMeasurements(Element element)
+        //{
+        //    return await _Element.GetElementMeasurements(element);
+        //}
 
-        public async ValueTask<ElementMeasurements> UpdateElementMeasurements(Element element)
-        {
-            element.Measurements = await _Element.GetElementMeasurements(element);
+        //public async ValueTask<ElementMeasurements> UpdateElementMeasurements(Element element)
+        //{
+        //   var measurements = await _Element.GetElementMeasurements(element);
 
-            return element.Measurements;
-        }
+        //    await element.UpdateMeasurements();
 
-        
+        //    return element.Measurements;
+        //}
 
-        public async Task RemoveAllSelections()
-        {
-            await _General.RemoveAllSelections();
-        }
+        //public async Task RemoveAllSelections()
+        //{
+        //    await _General.RemoveAllSelections();
+        //}
     }
 }

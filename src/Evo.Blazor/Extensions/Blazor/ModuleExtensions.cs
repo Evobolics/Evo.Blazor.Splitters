@@ -1,5 +1,4 @@
-﻿using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.JSInterop

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\Blazor\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

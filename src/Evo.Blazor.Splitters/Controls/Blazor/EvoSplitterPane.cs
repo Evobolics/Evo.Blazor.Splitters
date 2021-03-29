@@ -1,8 +1,13 @@
-﻿using HtmlAgilityPack;
+﻿using Evo.Blazor.Models;
+using Evo.Components.Blazor;
+using Evo.JsServices.Blazor;
+using Evo.Services.Blazor;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Evo.Controls.Blazor
 {
-    public partial class EvoSplitterPane: EvoSplitterPaneBase
+    public partial class EvoSplitterPane: DivComponentBase<SplitterPaneService_I>, IAsyncDisposable
     {
         private bool _TryUseExistingDiv = true;
         private bool _UseExistingDiv = false;
@@ -20,18 +25,62 @@ namespace Evo.Controls.Blazor
         private Dictionary<string, object> _outerDivAttributes;
         private string _OrignalStyleValue;
 
+     
+
+        [Parameter]
+        public string Style { get; set; }
+
+        [Parameter]
+        public string Class { get; set; }
+
+        [Parameter]
+        public int MinimumSizeInPixels { get; set; }
+
+        [Parameter]
+        public bool IsDraggable { get; set; } = false;
+
+
+
+        [CascadingParameter]
+        public EvoSplitter Splitter { get; set; }           /* This property is identified by type.
+                                                             * 
+                                                             * Per Microsoft, "Cascading values are bound to cascading parameters by type"
+                                                             * 
+                                                             * See: https://docs.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters?view=aspnetcore-5.0
+                                                             */
+
+        /// <summary>
+        /// Gets or sets the child content of the individual pane.    
+        /// </summary>
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }    /*  NOTE: The property receiving the RenderFragment content 
+                                                             *        must be named ChildContent by convention. 
+                                                             *       
+                                                             *       https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0
+                                                             */
+
+
+        
+
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
 
-            await Javascript.UpdateElementMeasurements(RootDivElement);            
+            await Element.RefreshMeasurementsAsync();
+
+            if (firstRender)
+            {
+                await Element.ObserveResizeAsync();
+            }
+
+            //Element.GetParent();
         }
 
         #region Rendering
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            var percentage = this.VirtualComponent.Percentage.ToString("F3", CultureInfo.InvariantCulture);
+            var percentage = this.Percentage.ToString("F3", CultureInfo.InvariantCulture);
 
             var calcFunction = "calc";
 
@@ -99,23 +148,34 @@ namespace Evo.Controls.Blazor
             else
             {
                 builder.AddAttribute(10, "style", dynamicStyle);
+
                 if (!string.IsNullOrWhiteSpace(this.Class))
                 {
                     builder.AddAttribute(20, "class", this.Class);
                 }
-                builder.AddContent(50, ChildContent);
+
+                CascadingValueTypeInference.CreateCascadingValue(builder, 47, 48, this, 49, (innerBuilder) =>
+                {
+                    innerBuilder.AddContent(50, ChildContent);
+                });
             }
 
-            builder.AddElementReferenceCapture(59, (elementReference) => RootDivElement.ElementReference = elementReference);
+            builder.AddElementReferenceCapture(59, (elementReference) =>
+            {
+                Element.ElementReference = elementReference;
+
+                //Console.WriteLine("Element captured");
+            });
 
             builder.CloseElement();
 
+            // TODO: Consider moving to the splitter control.
             if (!this.IsLastPane())
             {
-                TypeInference.CreateCascadingValue_0(builder, 60, 61, this, 62, (__builder2) =>
+                CascadingValueTypeInference.CreateCascadingValue(builder, 60, 61, this, 62, (innerBuilder) =>
                 {
-                    __builder2.OpenComponent<EvoGutterBar>(63);
-                    __builder2.CloseComponent();
+                    innerBuilder.OpenComponent<EvoGutterBar>(63);
+                    innerBuilder.CloseComponent();
                 });
             }
         }
@@ -132,11 +192,11 @@ namespace Evo.Controls.Blazor
 
             if (TryGetMarkupFrame(frames, out var markupFrame))
             {
-                Console.WriteLine("Got mark up frame.");
+                //Console.WriteLine("Got mark up frame.");
 
                 if (!TryGetCleanMarkupContent(markupFrame, out var markupContent))
                 {
-                    Console.WriteLine("Could not clean content");
+                    //Console.WriteLine("Could not clean content");
                     _UseExistingDiv = false;
                     return;
                 }
@@ -149,7 +209,7 @@ namespace Evo.Controls.Blazor
 
                 if (documentNode.ChildNodes.Count > 1)
                 {
-                    Console.WriteLine("Not a single root node in child content");
+                    //Console.WriteLine("Not a single root node in child content");
                     _UseExistingDiv = false;
                     return;
                 }
@@ -158,16 +218,16 @@ namespace Evo.Controls.Blazor
 
                 if (childNode.NodeType != HtmlNodeType.Element)
                 {
-                    Console.WriteLine("Single node is not an element.");
+                    //Console.WriteLine("Single node is not an element.");
                     _UseExistingDiv = false;
                     return;
                 }
 
-                Console.WriteLine(childNode.Name);
+                //Console.WriteLine(childNode.Name);
 
                 if (childNode.Name != "div")
                 {
-                    Console.WriteLine("Node is not a 'div' node.");
+                    //Console.WriteLine("Node is not a 'div' node.");
                     _UseExistingDiv = false;
                     return;
                 }
@@ -192,15 +252,12 @@ namespace Evo.Controls.Blazor
             }
             else
             {
+                //Console.WriteLine("Could not get mark up frame.");
 
-                
-
-                Console.WriteLine("Could not get mark up frame.");
                 _UseExistingDiv = false;
+
                 return;
             }
-
-
         }
 #pragma warning disable BL0006
         private bool TryGetCleanMarkupContent(RenderTreeFrame markupFrame, out string cleanContent)
@@ -228,7 +285,7 @@ namespace Evo.Controls.Blazor
         {
             foreach (var frame in frames)
             {
-                Console.WriteLine(frame.FrameType);
+                //Console.WriteLine(frame.FrameType);
 
                 if (frame.FrameType == RenderTreeFrameType.Markup)
                 {
@@ -242,9 +299,73 @@ namespace Evo.Controls.Blazor
         }
 #pragma warning restore BL0006
 
-        internal static class TypeInference
+        
+
+        public EvoSplitterBase Parent { get; internal set; }
+
+
+        public decimal Percentage { get; internal set; } = 50M;
+        public int Index { get; internal set; }
+
+
+        
+
+       
+
+
+        /*  NOTE: If multiple render fragments are going to be used, then the 
+         *        render fragment being filled needs to be named within the 
+         *        child component.  
+         * 
+         * https://blazor-university.com/templating-components-with-renderfragements/
+         */
+
+        protected async override Task OnInitializedAsync()
         {
-            public static void CreateCascadingValue_0<TValue>(RenderTreeBuilder builder, int seq00, int seq01, TValue attributeValue, int seq02, RenderFragment childContent)
+            await base.OnInitializedAsync();
+
+            // Register this pane with the splitter so that it knows it exists.
+            await Splitter.Service.RegisterPaneAsync(Splitter, this);
+
+            Splitter.OnSlidingStateChanged += Splitter_OnSlidingStateChanged;
+        }
+
+        private void Splitter_OnSlidingStateChanged(object sender, EventArgs e)
+        {
+            this.StateHasChanged();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await Splitter.Service.UnregisterPaneAsync(Splitter, this);
+        }
+
+        public bool IsLastPane()
+        {
+            return Service.IsLastPane(this);
+        }
+
+
+
+        public async Task OnMouseUp(MouseEventArgs args)
+        {
+            await Splitter.Service.ChangeSlidingStateAsync(Splitter, false);
+        }
+
+        public async Task OnMouseMove(MouseEventArgs args)
+        {
+            await Splitter.ResizePanesAsync(args);
+        }
+
+        public async Task OnMouseOut(MouseEventArgs args)
+        {
+            await Splitter.ResizePanesAsync(args);
+        }
+
+
+        internal static class CascadingValueTypeInference
+        {
+            public static void CreateCascadingValue<TValue>(RenderTreeBuilder builder, int seq00, int seq01, TValue attributeValue, int seq02, RenderFragment childContent)
             {
                 builder.OpenComponent<CascadingValue<TValue>>(seq00);
                 builder.AddAttribute(seq01, "Value", attributeValue);
@@ -252,7 +373,9 @@ namespace Evo.Controls.Blazor
                 builder.CloseComponent();
             }
         }
+    }
 
-        #endregion
-    }   
+    #endregion
+
+
 }

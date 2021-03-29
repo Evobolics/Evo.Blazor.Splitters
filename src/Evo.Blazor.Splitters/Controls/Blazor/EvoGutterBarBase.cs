@@ -9,8 +9,7 @@ namespace Evo.Controls.Blazor
         [CascadingParameter]
         public EvoSplitter Splitter { get; set; }
 
-        [CascadingParameter]
-        public EvoSplitterPane SplitterPane { get; set; }
+       
 
         [Parameter]
         public string Class { get; set; }
@@ -45,14 +44,14 @@ namespace Evo.Controls.Blazor
 
         public async Task OnMouseDown(MouseEventArgs args)
         {
-            await Splitter.ChangeSlidingStateAsync(true, args.ScreenX, args.ScreenY);
+            await Splitter.Service.ChangeSlidingStateAsync(Splitter, true, args.ScreenX, args.ScreenY);
         }
 
         public async Task OnMouseUp(MouseEventArgs args)
         {
             await Splitter.ResizePanesAsync(args);
 
-            await Splitter.ChangeSlidingStateAsync(false);
+            await Splitter.Service.ChangeSlidingStateAsync(Splitter, false);
         }
 
 

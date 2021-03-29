@@ -1,7 +1,11 @@
-// This is a JavaScript module that is loaded on demand. It can export any number of
-// functions, and may import other JavaScript modules if required.
 
+export function addClass(element, className) {
 
+}
+
+export function removeClass(element, className) {
+
+}
 
 export function getElementMeasurements(element) {
     
@@ -27,5 +31,31 @@ export function getElementMeasurements(element) {
 
     return retValue;
 
+}
+
+const resizeObservers = new Map();
+
+export function create(key, dotNetObserver, domElement) {
+
+    console.log(`reference: ${dotNetObserver !== null}, domElement: ${domElement !== null}`);
+
+    const resizeObserver = new ResizeObserver((entries, observer) => {
+        for (let entry of entries)
+        {
+            const measurements = getElementMeasurements(domElement);
+
+            dotNetObserver.invokeMethodAsync('OnResizeObserved', measurements);
+            break;
+        }
+    });
+
+    var entry = {
+        resizeObserver: resizeObserver,
+        key: key
+    };
+
+    resizeObservers.set(key, entry);
+
+    resizeObserver.observe(domElement);
 }
 

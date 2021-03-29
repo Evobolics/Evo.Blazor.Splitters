@@ -6,30 +6,32 @@ using Evo.Statics.Blazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
 namespace Evo.Controls.Blazor
 {
-    public class EvoSplitterBase: EvoComponentBase<VirtualEvoSplitter, SplitterService_I, DefaultServiceFactory>
+    public class EvoSplitterBase: EvoComponentBase<SplitterService_I>
     {
         public event EventHandler OnSlidingStateChanged;
-        private bool _IsSliding;
-        private decimal _InitialScreenX;
-        private decimal _InitialScreenY;
-        private decimal _OffsetY;
-        private decimal _OffsetX;
+
+        /// <summary>
+        /// Gets whether the control is actively sliding the divider.
+        /// </summary>
+        public bool IsSliding { get; set; }
+        public decimal InitialScreenX { get; set; }
+        public decimal InitialScreenY { get; set; }
+        public decimal OffsetY { get; set; }
+        public decimal OffsetX { get; set; }
 
         /// <summary>
         /// Creates a new EvoSplitterBase
         /// </summary>
         public EvoSplitterBase()
         {
-            // Contains the state but is not the real component.
-            VirtualComponent = new VirtualEvoSplitter()
-            {
-                Component = this
-            };
+           
+            
         }
 
         #region Parameters
@@ -43,27 +45,38 @@ namespace Evo.Controls.Blazor
          *               All the paramters listed here are in alphabetical order.  
          */
 
-        
+        /*  NOTE: The property receiving the RenderFragment content 
+         *        must be named ChildContent by convention. 
+         *
+         *        https://docs.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-5.0
+         *
+         */
+
+        /*  NOTE: If multiple render fragments are going to be used, then the 
+         *        render fragment being filled needs to be named within the 
+         *        child component.  
+         *        
+         *        https://blazor-university.com/templating-components-with-renderfragements/
+         * 
+         */
+
+        /*  DESIGN NOTE
+         *
+         *  This WAS named ChildContent, which was the default name for child content
+         *  within blazor, by convention.  But it implies that the content can be anything.
+         *  To help specify that the content should just be EvoSplitterPane(s), the name
+         *  has been changed to EvoSplitterPanes
+         */
 
         /// <summary>
         /// Gets or sets the child content.    
         /// </summary>
         [Parameter]
-        public RenderFragment EvoSpitterPanes
-        {
-            get
-            {
-                return VirtualComponent.EvoSpitterPanes;
-            }
-            set
-            {
-                VirtualComponent.EvoSpitterPanes = value;
-            }
-        }
+        public RenderFragment EvoSplitterPanes { get; set; }
 
         public void OnDragEnter(DragEventArgs args)
         {
-            Console.WriteLine("Drag Entered");
+            //Console.WriteLine("Drag Entered");
         }
 
         [Parameter]
@@ -83,47 +96,31 @@ namespace Evo.Controls.Blazor
         [Parameter]
         public SplitOrientation Orientation { get; set; } = SplitOrientation.Horizontal;
 
-        //[Parameter]
-        //public int DragInterval { get; set; } = 1;
 
-        //[Parameter]
-        //public bool ExpanedToMin { get; set; } = false;
-
-        //[Parameter]
-        //public SplitGutterAlign GutterAlign { get; set; } = SplitGutterAlign.Center;
 
         [Parameter]
         public int GutterSize { get; set; } = 8;
 
         
 
+        public List<EvoSplitterPane> RegisteredPanes { get; set; } = new List<EvoSplitterPane>();
+
         #endregion
-        /// <summary>
-        /// Gets whether the control is actively sliding the divider.
-        /// </summary>
-        public bool IsSliding => _IsSliding;
+      
+    
 
-        public Task ChangeSlidingStateAsync(bool newState, double screenX = 0, double screenY = 0)
+        
+
+        public void UpdateSlidingState(bool isSliding, decimal screenX, decimal screenY)
         {
-            if (newState == _IsSliding)
-            {
-                return Task.CompletedTask;
-            }
+            IsSliding = isSliding;
 
-            var existingIsSliding = _IsSliding;
-
-            _IsSliding = newState;
-
-            _InitialScreenX = (decimal)screenX;
-            _InitialScreenY = (decimal)screenY;
+            InitialScreenX = screenX;
+            InitialScreenY = screenY;
 
             OnSlidingStateChanged?.Invoke(this, new EventArgs());
 
-            Console.WriteLine("Is Sliding: " + newState.ToString());
-
             this.StateHasChanged();
-
-            return Task.CompletedTask;
         }
 
 
@@ -134,186 +131,13 @@ namespace Evo.Controls.Blazor
 
         public async Task ResizePanesAsync(MouseEventArgs args)
         {
-            if (!await ShouldResize(args))
-            {
-                return;
-            }
-
-            var pane0 = this.VirtualComponent.RegisteredPanes[0];
-            var pane1 = this.VirtualComponent.RegisteredPanes[1];
-
-            var pane0Rect = pane0.Component.RootDivElement.Measurements.BoundingClientRect;
-            var pane1Rect = pane1.Component.RootDivElement.Measurements.BoundingClientRect;
-
-            var difference = CalculateDiff(args);
-
-            if (Orientation == SplitOrientation.Horizontal)
-            {
-                if (difference.Y == 0) return;
-
-                var boundingBox = CalculateHorizontalBoundingBox(pane0Rect, pane1Rect);
-
-                if (!IsMouseWithinBoundingBox(boundingBox, args))
-                {
-                    await ChangeSlidingStateAsync(false);
-
-                    return;
-                }
-
-                _OffsetY += difference.Y;
-
-                UpdateBoxHeight(pane0, pane1, boundingBox);
-
-            }
-            else if (Orientation == SplitOrientation.Vertical)
-            {
-                if (difference.X == 0) return;
-
-                var boundingBox = CalculateVerticalBoundingBox(pane0Rect, pane1Rect);
-
-                if (!IsMouseWithinBoundingBox(boundingBox, args))
-                {
-                    await ChangeSlidingStateAsync(false);
-
-                    return;
-                }
-
-                _OffsetX += difference.X;
-
-                UpdateBoxWidth(pane0, pane1, boundingBox);
-            }
-            else
-            {
-                throw new NotSupportedException($"Orientation {Orientation} is not supported.");
-            }
+            if (!await Service.ResizePanes(this, args)) return;
 
             this.StateHasChanged();
         }
 
-        private (decimal X, decimal Y) CalculateDiff(MouseEventArgs args)
-        {
-            var screenX = (decimal)args.ScreenX;
-            var screenY = (decimal)args.ScreenY;
+        
 
-            var differenceX = screenX - _InitialScreenX;
-            var differenceY = screenY - _InitialScreenY;
-
-            (decimal X, decimal Y) diff = (X: differenceX, differenceY);
-
-            _InitialScreenX = screenX;
-            _InitialScreenY = screenY;
-
-            return diff;
-        }
-
-        private async Task<bool> ShouldResize(MouseEventArgs args)
-        {
-            // If sliding is not currently enabled, then there is no need to resize.
-            if (!IsSliding)
-            {
-                return false;
-            }
-
-            var leftButtonDepressed = (args.Buttons & 1) > 0;
-
-            // If the left mouse button is down, then 
-            if (!leftButtonDepressed)
-            {
-                await ChangeSlidingStateAsync(false);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool IsMouseWithinBoundingBox(ElementRectangle boundingBox, MouseEventArgs args)
-        {
-            var leftLocation = (decimal)args.ClientX - boundingBox.Left;
-            var topLocation = (decimal)args.ClientY - boundingBox.Top;
-            var rightLocation = boundingBox.Right - (decimal)args.ClientX;
-            var bottomLocation = boundingBox.Bottom - (decimal)args.ClientY;
-
-            return (leftLocation >= 1 && rightLocation >= 1 && topLocation >= 1 && bottomLocation >= 1);
-        }
-
-        #region Vertical Implementation
-
-        private ElementRectangle CalculateVerticalBoundingBox(ElementRectangle pane0Rect, ElementRectangle pane1Rect)
-        {
-            var boundingBox = new ElementRectangle();
-
-            boundingBox.Top = pane0Rect.Top;
-            boundingBox.Bottom = pane0Rect.Bottom;
-            boundingBox.Left = pane0Rect.Left;
-            boundingBox.Right = pane1Rect.Right;
-            boundingBox.Width = boundingBox.Right - boundingBox.Left;
-            boundingBox.Height = boundingBox.Bottom - boundingBox.Top;
-
-            return boundingBox;
-        }
-
-        private void UpdateBoxWidth(VirtualEvoSplitterPane pane0, VirtualEvoSplitterPane pane1, ElementRectangle boundingBox)
-        {
-            var boxwidth = boundingBox.Width / 2M;
-            var boxwidth0 = boxwidth + _OffsetX;
-
-            if (boxwidth0 < pane0.Component.MinimumSizeInPixels)
-            {
-                boxwidth0 = pane0.Component.MinimumSizeInPixels;
-            }
-
-            var boxwidth1 = boundingBox.Width - boxwidth0;
-
-            if (boxwidth1 < pane1.Component.MinimumSizeInPixels)
-            {
-                boxwidth1 = pane1.Component.MinimumSizeInPixels;
-                boxwidth0 = boundingBox.Width - boxwidth1;
-            }
-
-            pane0.Percentage = boxwidth0 / boundingBox.Width * 100M;
-            pane1.Percentage = boxwidth1 / boundingBox.Width * 100M;
-        }
-
-        #endregion
-
-        #region Horizontal Implementation
-
-        private void UpdateBoxHeight(VirtualEvoSplitterPane pane0, VirtualEvoSplitterPane pane1, ElementRectangle boundingBox)
-        {
-            var boxheight = boundingBox.Height / 2M;
-            var boxheight0 = boxheight + _OffsetY;
-
-            if (boxheight0 < pane0.Component.MinimumSizeInPixels)
-            {
-                boxheight0 = pane0.Component.MinimumSizeInPixels;
-            }
-
-            var boxheight1 = boundingBox.Height - boxheight0;
-
-            if (boxheight1 < pane1.Component.MinimumSizeInPixels)
-            {
-                boxheight1 = pane1.Component.MinimumSizeInPixels;
-                boxheight0 = boundingBox.Height - boxheight1;
-            }
-
-            pane0.Percentage = boxheight0 / boundingBox.Height * 100M;
-            pane1.Percentage = boxheight1 / boundingBox.Height * 100M;
-        }
-
-        private ElementRectangle CalculateHorizontalBoundingBox(ElementRectangle pane0Rect, ElementRectangle pane1Rect)
-        {
-            var boundingBox = new ElementRectangle();
-
-            boundingBox.Top = pane0Rect.Top;
-            boundingBox.Bottom = pane1Rect.Bottom;
-            boundingBox.Left = pane0Rect.Left;
-            boundingBox.Right = pane0Rect.Right;
-            boundingBox.Width = boundingBox.Right - boundingBox.Left;
-            boundingBox.Height = boundingBox.Bottom - boundingBox.Top;
-
-            return boundingBox;
-        }
-
-        #endregion
+        
     }
 }

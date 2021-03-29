@@ -1,5 +1,4 @@
-﻿using Evo.Models.Blazor;
-using Microsoft.JSInterop;
+﻿using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 

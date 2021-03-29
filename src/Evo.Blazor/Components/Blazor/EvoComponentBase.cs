@@ -1,18 +1,17 @@
 ﻿using Evo.Services.Blazor;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Threading.Tasks;
 
 namespace Evo.Components.Blazor
 {
-    public class EvoComponentBase<TVirtualComponent, TService, TDefaultServices> : ComponentBase
-        where TVirtualComponent : new()
+    public class EvoComponentBase<TService> : ComponentBase
+        
     {
         #region Constructor(s)
 
         public EvoComponentBase()
         {
-            VirtualComponent = new TVirtualComponent();
+            
         }
 
         #endregion
@@ -22,6 +21,10 @@ namespace Evo.Components.Blazor
         [Inject]
         public EvoJavascriptComponentService Javascript { get; set; }
 
+        [Inject]
+        public FactoryService_I Factory { get; set; }
+
+        [Inject]
         /// <summary>
         /// Gets or sets the instance of the splitter service that contains the logic for this component.
         /// </summary>
@@ -35,27 +38,15 @@ namespace Evo.Components.Blazor
         [Inject]
         public IServiceProvider ServiceProvider { get; set; }
 
-        /// <summary>
-        /// Gets or sets the virtual component that is associated with this component.  The virtual component contains the actual state.
-        /// </summary>
-        public TVirtualComponent VirtualComponent { get; set; }
+        ///// <summary>
+        ///// Gets or sets the virtual component that is associated with this component.  The virtual component contains the actual state.
+        ///// </summary>
+        //public TVirtualComponent VirtualComponent { get; set; }
 
         #endregion
 
-        #region Methods
+        
 
-        protected override Task OnInitializedAsync()
-        {
-            var task = base.OnInitializedAsync();
-
-            // Allows for the service to be overriden by users of the library.  If they want to change the algorithms used
-            // they can.
-            Service = ServiceProvider.GetServiceOrDefaultFrom<TService, TDefaultServices>();
-
-            return task;
-        }
-
-        #endregion
 
     }
 }

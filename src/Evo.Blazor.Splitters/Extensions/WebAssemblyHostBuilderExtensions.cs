@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+﻿using Evo.Services.Blazor;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -20,6 +21,9 @@ namespace Evo.Extensions
 
                 _Added = true;
             }
+
+            builder.Services.AddScoped<SplitterService_I, SplitterService>();
+            builder.Services.AddScoped<SplitterPaneService_I, SplitterPaneService>();
 
             await builder.AddEvoBlazor();
 
