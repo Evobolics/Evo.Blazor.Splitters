@@ -4,7 +4,21 @@ A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.
 
 # How to Use
 
-Comming Soon - The code is checked in but a formal guide on how to use it needs to be put together. If immediately interested in how to use the control, please see the example in the solution.
+For right now, to use the splitter, download the Evo.Blazor and Evo.Blazor.Splitters libraries, and compile them or add them your solution directly.  A package on github is in the works.  If you download the entire repository, the solution will contain the examples on how to use the splitter.   
+
+```
+<EvoSplitter GutterBarClass="splitterGutterBar" Orientation="SplitOrientation.Horizontal">
+    <EvoSplitterPanes>
+        <EvoSplitterPane Class="splitterPane" Style="user-select: none;" MinimumSizeInPixels="28">
+            <div class="splitterPane" style="user-select: none;" >inner content 1</div>
+        </EvoSplitterPane>
+        <EvoSplitterPane MinimumSizeInPixels="26">
+            <div class="splitterPane" style="user-select: none;" >inner content 2</div>
+        </EvoSplitterPane>
+    </EvoSplitterPanes>
+    
+</EvoSplitter>
+```
 
 # Purpose 
 
