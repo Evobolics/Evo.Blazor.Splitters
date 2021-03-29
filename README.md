@@ -20,17 +20,32 @@ For right now, to use the splitter, download the Evo.Blazor and Evo.Blazor.Split
 </EvoSplitter>
 ```
 
+# Project
+
+The rest of this document is dedicated to provide information about how the project and explain how the control was developed.  The work was not trivial and required a good amount of research.  While other developers could probably have done this quicker, a lot of other developers will probably struggle with these concepts as much or more.  To aide them and to give back to the community, the project notes are below.
+
 # Purpose 
 
 1) Learn what is needed to create a decently complex custom control in Blazor
 2) Create a splitter control that can be used to seperate a control area from a canvas
 
+## Create a Splitter Control
+
+This project came up as a neccessity to build out another larger work, and thus was not random.  Thus the primary purpose of this project was to learn how to create a slidder control where on of the divs can contain a canvas.  In addition, the canvas's dimensions needed to be kept up to date as the parent div changed its size and dimensions.   Several projects were found, but nothing up to date was found that could fit what was needed.  Thus, decided to create a new one from scratch, though with some help here and there from some existing open source libraries.  
+
+## Learn .NET 5 Custom Controls Development
+
+Been around a the block a few times with Blazor, but have not had the chance yet to actaully build out a custom control with .NET 5 with any decent amount of complexity.  Blazor has been changing a lot over the years, and this was a great refresher course.  After researching what is all involved in making a slider control work, this project appeared to be a good opportunity to learn about all the complex nuances of building out a control from scratch.  In the end, it was.  The effort required using paramaters, child controls, cascading parameters, the javascript interop, writing custom rendering routines, learning about all the mouse events, investigating drag and drop (though ulitmaely, for now, decided not to use), and how to utilize the resizeObserver pattern.  In addition, created a message bus to enable controls to communicate asynchrounously without havig to lookups each time an event was fired.  
+
 # Goals
 
-- Avoid as much javascript as possible - The goal is to create a native solution if at all possible and not have to mess with a javascript implementation.  Split.js already does this work well, and the purpose of this project is to learn what it takes to 
-- Inject as litle as possible into the DOM when implementing the control.  Gutter/Splitter bars will need to be added to seperate the panes, but one of the goals of this project is to learn how the DIV elements already present in the markup can be used.  There are two ways of approaching this. The first is to use javascript to edit what is already there.  The second is to use an HTML agility pack and parse the HTML and rebuild the outer divs.  Currently leaning toward the second as it eliminates javascript from the equation, which is another goal.
+- Avoid as much javascript as possible - The goal is to create a native solution if at all possible and not have to mess with a javascript implementation.  Split.js already does this work well, and the purpose of this project is to learn how to create a native control that can do the same.  
+- Inject as litle as possible into the DOM when implementing the control.  One of the goals of Splitter.js was to keep the footprint low.  It was decided that this project would have the same goal.  While gutter/splitter bars will need to be added to seperate the div panes from one another, not having to create wrapper DIV elements is another if they already exists.  There are two ways of approaching this. The first is to use javascript to edit what is already there; this was frowned upon.  The second is to use an HTML agility pack and parse the HTML and rebuild the outer divs within the library; the later was ultimately chosen as it eliminates additional javascript from the equation, which is the first goal.
+- Create a performant solution.  While the solution can probably still be tuned a bit more, the one created here results in smooth slidding and minimizes updates to any child controls.  
 
 # Implementation
+
+
 
 ## Get Two Divs to Show Up
 
