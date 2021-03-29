@@ -22,7 +22,7 @@ For right now, to use the splitter, download the Evo.Blazor and Evo.Blazor.Split
 
 # Project
 
-The rest of this document is dedicated to provide information about how the project and explain how the control was developed.  The work was not trivial and required a good amount of research.  While other developers could probably have done this quicker, a lot of other developers will probably struggle with these concepts as much or more.  To aide them and to give back to the community, the project notes are below.
+The rest of this document is dedicated to provide information about how the project came together and explain how the control was developed.  The work was not trivial and required a good amount of research.  While other developers could probably have done this quicker, a lot of other developers will probably struggle with these concepts, as much, or more.  To aide them, and to give back to the community, the project notes are below.
 
 # Purpose 
 
