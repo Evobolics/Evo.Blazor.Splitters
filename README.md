@@ -26,8 +26,9 @@ The rest of this document is dedicated to provide information about how the proj
 
 # Purpose 
 
-1) Learn what is needed to create a decently complex custom control in Blazor
-2) Create a splitter control that can be used to seperate a control area from a canvas
+1) Create a splitter control that can be used to seperate a control area from a canvas
+1) Learn what is needed to create a decently complex custom control in Blazor using .NET 5
+
 
 ## Create a Splitter Control
 
@@ -45,25 +46,31 @@ Been around a the block a few times with Blazor, but have not had the chance yet
 
 # Implementation
 
-
+The following are some notes on how the project was implemented and how the projects was put together.  Given there was a lot of learning involved, the plan was to take the everything one step at a time and not try to create a perfect solution the first go around.  Instead, the plan was to get it working then refine as neccessary to come up with a performant slidder solution that met the goals above.  
 
 ## Get Two Divs to Show Up
 
-### Setup Child Content
+The first step of the project was to get two divs to show up on the screen.  
+
+### Format the Controls Statically
+
+The Make the bar the right height, and color, give the panes a background color, use a calc expression to handle height.
+
+### Make them Appear Dynamically / Setup Child Controls
 
 ## Build the Gutter / Splitter Bar
 
-### Setup Services
+## Make the Slider Work
 
-### Made Services Injectable
+## Setup Services
 
-### Setup Pane Registration
+## Made Services Injectable
 
-### Add Logic to Determine If Pane is Last
+## Setup Pane Registration
 
-## Format the Controls Statically
+## Add Logic to Determine If Pane is Last
 
-Make the bar the right height, and color, give the panes a background color, use a calc expression to handle height.
+
 
 ## Make Formating Appear Dynamically
 The next step is to create a div that appears after every pane div.  
