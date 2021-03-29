@@ -1,6 +1,10 @@
 # Evo.Blazor.Splitters
 
-Goal is to create a native splitter implementation for blazor
+A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.  
+
+# How to Use
+
+Comming Soon - The code is checked in but a formal guide on how to use it needs to be put together. If immediately interested in how to use the control, please see the example in the solution.
 
 # Purpose 
 
@@ -242,6 +246,10 @@ public partial class EvoSplitterPane: EvoSplitterPaneBase
         }
     }
 ```
+
+## Consolidate the Measurement Process
+
+The initial design was setup where the control would be measured after reach render was complete.  After implementing an [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver/ResizeObserver) pattern to enable detection of the div being resized for any reason, it was thought it may be better to receive async updatesoly from the javascript and not call the RefreshMeasurementsAsync after each refresh.  Numerically, this worked, but there was an noticable flicker on the screen when the splitter div pane contained a child canvas.  Thus both are used to update the measurements.
 
 # References
 
