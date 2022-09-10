@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Evo.Controls.Blazor
 {
-    public partial class EvoSplitterPane: DivComponentBase<SplitterPaneService_I>, IAsyncDisposable
+    public partial class EvoSplitterPane: DivComponentBase<ISplitterPaneService>, IAsyncDisposable
     {
         private bool _TryUseExistingDiv = true;
         private bool _UseExistingDiv = false;

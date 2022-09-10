@@ -1,6 +1,6 @@
 # Evo.Blazor.Splitters
 
-A .NET 5.0 Blazor Splitter Control that is almost entirely written in C#.  
+A .NET 6.0 Blazor Splitter Control that is almost entirely written in C#.  
 
 # How to Use
 
@@ -36,7 +36,7 @@ This project came up as a neccessity to build out another larger work, and thus 
 
 ## Learn .NET 5 Custom Controls Development
 
-Been around a the block a few times with Blazor, but have not had the chance yet to actaully build out a custom control with .NET 5 with any decent amount of complexity.  Blazor has been changing a lot over the years, and this was a great refresher course.  After researching what is all involved in making a slider control work, this project appeared to be a good opportunity to learn about all the complex nuances of building out a control from scratch.  In the end, it was.  The effort required using paramaters, child controls, cascading parameters, the javascript interop, writing custom rendering routines, learning about all the mouse events, investigating drag and drop (though ulitmaely, for now, decided not to use), and how to utilize the resizeObserver pattern.  In addition, created a message bus to enable controls to communicate asynchrounously without havig to lookups each time an event was fired.  
+Been around a the block a few times with Blazor, but have not had the chance yet to actaully build out a custom control with .NET 6 with any decent amount of complexity.  Blazor has been changing a lot over the years, and this was a great refresher course.  After researching what is all involved in making a slider control work, this project appeared to be a good opportunity to learn about all the complex nuances of building out a control from scratch.  In the end, it was.  The effort required using paramaters, child controls, cascading parameters, the javascript interop, writing custom rendering routines, learning about all the mouse events, investigating drag and drop (though ulitmaely, for now, decided not to use), and how to utilize the resizeObserver pattern.  In addition, created a message bus to enable controls to communicate asynchrounously without havig to lookups each time an event was fired.  
 
 # Goals
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Evo.Controls.Blazor
 {
-    public class EvoSplitterBase: EvoComponentBase<SplitterService_I>
+    public class EvoSplitterBase: EvoComponentBase<ISplitterService>
     {
         public event EventHandler OnSlidingStateChanged;
 

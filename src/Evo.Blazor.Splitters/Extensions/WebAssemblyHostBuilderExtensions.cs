@@ -22,8 +22,8 @@ namespace Evo.Extensions
                 _Added = true;
             }
 
-            builder.Services.AddScoped<SplitterService_I, SplitterService>();
-            builder.Services.AddScoped<SplitterPaneService_I, SplitterPaneService>();
+            builder.Services.AddScoped<ISplitterService, SplitterService>();
+            builder.Services.AddScoped<ISplitterPaneService, SplitterPaneService>();
 
             await builder.AddEvoBlazor();
 
