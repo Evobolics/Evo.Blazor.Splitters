@@ -3,7 +3,7 @@ using Evo.Models.Blazor;
 
 namespace Evo.Services.Blazor
 {
-    public interface SplitterPaneService_I
+    public interface ISplitterPaneService
     {
         
         bool IsLastPane(EvoSplitterPane virtualComponent);

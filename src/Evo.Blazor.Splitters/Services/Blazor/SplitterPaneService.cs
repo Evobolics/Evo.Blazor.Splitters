@@ -3,7 +3,7 @@ using Evo.Models.Blazor;
 
 namespace Evo.Services.Blazor
 {
-    public class SplitterPaneService : SplitterPaneService_I
+    public class SplitterPaneService : ISplitterPaneService
     {
         
 

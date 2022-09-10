@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Evo.Services.Blazor
 {
-    public class SplitterService: SplitterService_I
+    public class SplitterService: ISplitterService
     {
         public Task ChangeSlidingStateAsync(EvoSplitterBase splitter, bool newState, double screenX = 0, double screenY = 0)
         {
